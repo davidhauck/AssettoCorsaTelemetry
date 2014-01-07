@@ -116,6 +116,10 @@ namespace AssettoCorsaTelemetry
             ReplayTimeMultiplier = new List<float>();
             NormalizedCarPosition = new List<float>();
             CarCoordinates = new List<List<float>>();
+
+            Empty = new List<string>();
+            TurnSections = new List<int>(); 
+            Turns = new List<int>();
         }
 
         #region Physics
@@ -172,5 +176,9 @@ namespace AssettoCorsaTelemetry
         public List<float> NormalizedCarPosition { get; set; }
         public List<List<float>> CarCoordinates { get; set; }
         #endregion
+
+        public List<string> Empty { get; set; } //Used since there is a comma at the end of each line which is an empty string. This should be fixed
+        public List<int> TurnSections { get; set; }
+        public List<int> Turns { get; set; }
     }
 }

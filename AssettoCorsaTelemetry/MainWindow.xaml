@@ -13,8 +13,12 @@
         <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Width="{Binding Forces.CanvasWidth}" Height="{Binding Forces.CanvasHeight}" Margin="10, 80, 10, 10" Visibility="{Binding AnalyzingVisibility}" Background="Black">
             <ContentPresenter Content="{Binding Forces.AccelerationMap, Mode=TwoWay}"/>
         </Canvas>
-        <Canvas VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="{Binding Rpms.CanvasHeight}" Width="{Binding Rpms.CanvasWidth}" Background="AliceBlue">
+        <Canvas VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="{Binding Rpms.CanvasHeight}" Width="{Binding Rpms.CanvasWidth}" Background="AliceBlue" Visibility="{Binding AnalyzingVisibility}">
             <ContentPresenter Content="{Binding Rpms.RpmCanvas, Mode=TwoWay}"/>
         </Canvas>
+        <ComboBox HorizontalAlignment="Left" Margin="186,29,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding CollectionLaps}" SelectedItem="{Binding SelectedLap}"/>
+        <Label Content="Lap" HorizontalAlignment="Left" Margin="186,3,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="311,29,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding CollectionSections}" SelectedItem="{Binding SelectedSection}"/>
+        <Label Content="Section" HorizontalAlignment="Left" Margin="311,3,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

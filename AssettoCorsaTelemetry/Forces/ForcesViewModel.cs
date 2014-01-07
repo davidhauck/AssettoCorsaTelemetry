@@ -25,6 +25,11 @@ namespace AssettoCorsaTelemetry.Forces
 
         public void DrawAccelerationMap(List<float> xPositions, List<float> yPositions)
         {
+            AccelerationMap.Children.Clear();
+            if (xPositions.Count == 0)
+            {
+                return;
+            }
             float minX = xPositions.Min();
             float minY = yPositions.Min();
             float maxX = xPositions.Max();

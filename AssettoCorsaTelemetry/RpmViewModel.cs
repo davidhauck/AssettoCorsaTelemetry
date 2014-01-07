@@ -34,6 +34,11 @@ namespace AssettoCorsaTelemetry
 
         public void DrawRpmCanvas(List<int> rpms, List<float> speeds)
         {
+            RpmCanvas.Children.Clear();
+            if (rpms.Count == 0)
+            {
+                return;
+            }
             int maxRpm = rpms.Max();
             float maxSpeed = speeds.Max();
 
