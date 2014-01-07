@@ -57,14 +57,21 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CommandHandler.cs" />
-    <Compile Include="CompetedRace\CompletedRace.xaml.cs">
-      <DependentUpon>CompletedRace.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Forces\ForcesViewModel.cs" />
+    <Compile Include="Forces\FrictionCircleView.xaml.cs">
+      <DependentUpon>FrictionCircleView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RaceModel.cs" />
-    <Compile Include="RpmViewModel.cs" />
+    <Compile Include="Rpm\RpmView.xaml.cs">
+      <DependentUpon>RpmView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Rpm\RpmViewModel.cs" />
     <Compile Include="Track\Track.cs" />
-    <Page Include="CompetedRace\CompletedRace.xaml">
+    <Compile Include="Track\TrackView.xaml.cs">
+      <DependentUpon>TrackView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils.cs" />
+    <Page Include="Forces\FrictionCircleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -81,6 +88,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Rpm\RpmView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Track\TrackView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowViewModel.cs" />

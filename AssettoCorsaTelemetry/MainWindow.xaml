@@ -6,16 +6,7 @@
     <Grid>
         <Label Content="Status:" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="50,5,0,0" TextWrapping="Wrap" Text="{Binding Status}" VerticalAlignment="Top" RenderTransformOrigin="2.092,5.758"/>
-        <Canvas HorizontalAlignment="Right" Height="{Binding Track.CanvasHeight}" VerticalAlignment="Top" Width="{Binding Track.CanvasWidth}" Background="Green">
-            <ContentPresenter Content="{Binding Track.TrackCanvas, Mode=TwoWay}"/>
-        </Canvas>
         <Button Content="Open Completed Race" Command="{Binding ClickCommand}" HorizontalAlignment="Left" Margin="0,31,0,0" VerticalAlignment="Top" Width="140" Visibility="{Binding RacingVisibility}"/>
-        <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Width="{Binding Forces.CanvasWidth}" Height="{Binding Forces.CanvasHeight}" Margin="10, 80, 10, 10" Visibility="{Binding AnalyzingVisibility}" Background="Black">
-            <ContentPresenter Content="{Binding Forces.AccelerationMap, Mode=TwoWay}"/>
-        </Canvas>
-        <Canvas VerticalAlignment="Bottom" HorizontalAlignment="Left" Height="{Binding Rpms.CanvasHeight}" Width="{Binding Rpms.CanvasWidth}" Background="AliceBlue" Visibility="{Binding AnalyzingVisibility}">
-            <ContentPresenter Content="{Binding Rpms.RpmCanvas, Mode=TwoWay}"/>
-        </Canvas>
         <ComboBox HorizontalAlignment="Left" Margin="186,29,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding CollectionLaps}" SelectedItem="{Binding SelectedLap}"/>
         <Label Content="Lap" HorizontalAlignment="Left" Margin="186,3,0,0" VerticalAlignment="Top"/>
         <ComboBox HorizontalAlignment="Left" Margin="311,29,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding CollectionSections}" SelectedItem="{Binding SelectedSection}"/>

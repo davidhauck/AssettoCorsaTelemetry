@@ -15,16 +15,52 @@ namespace AssettoCorsaTelemetry.Forces
         private Canvas _accelerationMap;
         public Canvas AccelerationMap { get { return _accelerationMap; } set { SetProperty(ref _accelerationMap, value); } }
 
-        public int CanvasWidth { get { return 300; } }
-        public int CanvasHeight { get { return 300; } }
+
+        private int _canvasWidth = 300;
+        public int CanvasWidth
+        {
+            get
+            {
+                return _canvasWidth;
+            }
+            set
+            {
+                SetProperty(ref _canvasWidth, value);
+                DrawAccelerationMap(_cachedXPositions, _cachedYPositions);
+            }
+        }
+
+        private int _canvasHeight = 300;
+        public int CanvasHeight
+        {
+            get
+            {
+                return _canvasHeight;
+            }
+            set
+            {
+                SetProperty(ref _canvasHeight, value);
+                DrawAccelerationMap(_cachedXPositions, _cachedYPositions);
+            }
+        }
 
         public ForcesViewModel()
         {
             AccelerationMap = new Canvas();
         }
 
+        List<float> _cachedXPositions;
+        List<float> _cachedYPositions;
+
+        private int ActualWidth { get { return CanvasWidth - 20; } }
+
+        private int ActualHeight { get { return CanvasHeight - 40; } }
+
         public void DrawAccelerationMap(List<float> xPositions, List<float> yPositions)
         {
+            _cachedXPositions = xPositions;
+            _cachedYPositions = yPositions;
+
             AccelerationMap.Children.Clear();
             if (xPositions.Count == 0)
             {
@@ -41,35 +77,35 @@ namespace AssettoCorsaTelemetry.Forces
             int maxHorizontalRounded = (int)(maxHorizontal + 1.0f);
             int maxVerticalRounded = (int)(maxVertical + 1.0f);
 
-            float ratioX = (CanvasWidth / 2) / maxHorizontalRounded;
-            float ratioY = (CanvasHeight / 2) / maxVerticalRounded;
+            float ratioX = (ActualWidth / 2) / maxHorizontalRounded;
+            float ratioY = (ActualHeight / 2) / maxVerticalRounded;
 
             float ratio = Math.Max(ratioX, ratioY);
 
             Line xAxis = new Line();
             xAxis.X1 = 0;
-            xAxis.X2 = CanvasWidth;
-            xAxis.Y1 = xAxis.Y2 = CanvasHeight / 2;
+            xAxis.X2 = ActualWidth;
+            xAxis.Y1 = xAxis.Y2 = ActualHeight / 2;
             xAxis.Fill = Brushes.White;
             xAxis.Stroke = Brushes.White;
             xAxis.StrokeThickness = 0.4;
 
             Line yAxis = new Line();
-            yAxis.X1 = yAxis.X2 = CanvasWidth / 2;
+            yAxis.X1 = yAxis.X2 = ActualWidth / 2;
             yAxis.Y1 = 0;
-            yAxis.Y2 = CanvasHeight;
+            yAxis.Y2 = ActualHeight;
             yAxis.Fill = Brushes.White;
             yAxis.Stroke = Brushes.White;
             yAxis.StrokeThickness = 0.4;
 
             int counter = 1;
-            for (double i = CanvasWidth / 8.0; i < CanvasWidth / 2.0; i += CanvasWidth / 8.0)
+            for (double i = ActualWidth / 8.0; i < ActualWidth / 2.0; i += ActualWidth / 8.0)
             {
                 Ellipse e = new Ellipse();
-                e.Height = (8 - 2 * counter) / 8.0 * CanvasHeight;
-                Canvas.SetTop(e, counter * CanvasHeight / 8);
-                e.Width = (8 - 2 * counter) / 8.0 * CanvasWidth;
-                Canvas.SetLeft(e, counter * CanvasWidth / 8);
+                e.Height = (8 - 2 * counter) / 8.0 * ActualHeight;
+                Canvas.SetTop(e, counter * ActualHeight / 8);
+                e.Width = (8 - 2 * counter) / 8.0 * ActualWidth;
+                Canvas.SetLeft(e, counter * ActualWidth / 8);
                 e.Fill = Brushes.Transparent;
                 e.Stroke = Brushes.Maroon;
                 e.StrokeThickness = 0.35f;
@@ -78,12 +114,12 @@ namespace AssettoCorsaTelemetry.Forces
             }
 
             counter = 0;
-            for (int i = 0; i <= CanvasWidth; i += CanvasWidth / 8)
+            for (int i = 0; i <= ActualWidth; i += ActualWidth / 8)
             {
                 Line newLine = new Line();
                 newLine.X1 = newLine.X2 = i;
-                newLine.Y1 = CanvasHeight / 2 - 6;
-                newLine.Y2 = CanvasHeight / 2 + 6;
+                newLine.Y1 = ActualHeight / 2 - 6;
+                newLine.Y2 = ActualHeight / 2 + 6;
                 newLine.Fill = Brushes.White;
                 newLine.Stroke = Brushes.White;
                 newLine.StrokeThickness = 0.4;
@@ -91,7 +127,7 @@ namespace AssettoCorsaTelemetry.Forces
 
                 TextBlock tb = new TextBlock();
                 tb.Text = ((-4.0 + counter) / 4.0 * maxHorizontalRounded).ToString();
-                Canvas.SetTop(tb, CanvasHeight / 2 + 8);
+                Canvas.SetTop(tb, ActualHeight / 2 + 8);
                 Canvas.SetLeft(tb, i);
                 tb.Foreground = Brushes.Gray;
                 tb.FontSize = 7;
@@ -100,12 +136,12 @@ namespace AssettoCorsaTelemetry.Forces
             }
 
             counter = 0;
-            for (int i = 0; i <= CanvasHeight; i += CanvasHeight / 8)
+            for (int i = 0; i <= ActualHeight; i += ActualHeight / 8)
             {
                 Line newLine = new Line();
                 newLine.Y1 = newLine.Y2 = i;
-                newLine.X1 = CanvasWidth / 2 - 6;
-                newLine.X2 = CanvasWidth / 2 + 6;
+                newLine.X1 = ActualWidth / 2 - 6;
+                newLine.X2 = ActualWidth / 2 + 6;
                 newLine.Fill = Brushes.White;
                 newLine.Stroke = Brushes.White;
                 newLine.StrokeThickness = 0.4;
@@ -113,7 +149,7 @@ namespace AssettoCorsaTelemetry.Forces
 
                 TextBlock tb = new TextBlock();
                 tb.Text = ((-4.0 + counter) / 4.0 * maxVerticalRounded).ToString();
-                Canvas.SetLeft(tb, CanvasWidth / 2 + 8);
+                Canvas.SetLeft(tb, ActualWidth / 2 + 8);
                 Canvas.SetTop(tb, i);
                 tb.Foreground = Brushes.Gray;
                 tb.FontSize = 7;
@@ -131,8 +167,8 @@ namespace AssettoCorsaTelemetry.Forces
                 e.Width = 2;
                 e.Fill = Brushes.Blue;
 
-                Canvas.SetTop(e, CanvasHeight / 2 - yPositions[i] * ratio);
-                Canvas.SetLeft(e, CanvasWidth / 2 - xPositions[i] * ratio);
+                Canvas.SetTop(e, ActualHeight / 2 - yPositions[i] * ratioY);
+                Canvas.SetLeft(e, ActualWidth / 2 - xPositions[i] * ratioX);
 
                 AccelerationMap.Children.Add(e);
             }

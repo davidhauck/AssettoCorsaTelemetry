@@ -1,0 +1,8 @@
+﻿<Window x:Class="AssettoCorsaTelemetry.Rpm.RpmView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="RpmView" Height="{Binding CanvasHeight, Mode=TwoWay}" Width="{Binding CanvasWidth, Mode=TwoWay}">
+    <Canvas VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="AliceBlue">
+        <ContentPresenter Content="{Binding RpmCanvas, Mode=TwoWay}"/>
+    </Canvas>
+</Window>

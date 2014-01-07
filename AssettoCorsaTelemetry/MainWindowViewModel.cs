@@ -1,5 +1,6 @@
 ﻿using AcSdk.Data;
 using AssettoCorsaTelemetry.Forces;
+using AssettoCorsaTelemetry.Rpm;
 using AssettoCorsaTelemetry.Track;
 using Microsoft.Win32;
 using System;
@@ -45,44 +46,11 @@ namespace AssettoCorsaTelemetry
             }
         }
 
-        private TrackViewModel _track;
-        public TrackViewModel Track
-        {
-            get
-            {
-                return _track;
-            }
-            set
-            {
-                SetProperty(ref _track, value);
-            }
-        }
+        private TrackView TrackView { get; set; }
 
-        private ForcesViewModel _forces;
-        public ForcesViewModel Forces
-        {
-            get
-            {
-                return _forces;
-            }
-            set
-            {
-                SetProperty(ref _forces, value);
-            }
-        }
+        private FrictionCircleView ForcesView { get; set; }
 
-        private RpmViewModel _rpms;
-        public RpmViewModel Rpms
-        {
-            get
-            {
-                return _rpms;
-            }
-            set
-            {
-                SetProperty(ref _rpms, value);
-            }
-        }
+        private RpmView RpmView { get; set; }
 
         private ICommand _clickCommand;
         public ICommand ClickCommand
@@ -169,7 +137,7 @@ namespace AssettoCorsaTelemetry
                     CollectionLaps.Add(i.ToString());
                 }
                 int numberOfSections;
-                rm.TurnSections = Track.FindTurnsBasedOnLap(rm.CompletedLaps, rm.AccG, rm.CarCoordinates, 0, out numberOfSections);
+                rm.TurnSections = Utils.FindTurnsBasedOnLap(rm.CompletedLaps, rm.AccG, rm.CarCoordinates, 0, out numberOfSections);
                 CollectionSections.Clear();
                 CollectionSections.Add("All Sections");
                 for (int i = 1; i <= numberOfSections; i++)
@@ -221,7 +189,13 @@ namespace AssettoCorsaTelemetry
                     turnSections.Add(rm.TurnSections[i]);
                 }
             }
-            Track.DrawTrack(xCoor, yCoor, turnSections);
+            if (TrackView == null)
+            {
+                TrackView = new TrackView();
+            }
+            TrackView.Track.DrawTrack(xCoor, yCoor, turnSections);
+            TrackView.Topmost = true;
+            TrackView.Show();
         }
 
         private void DrawForces()
@@ -252,7 +226,13 @@ namespace AssettoCorsaTelemetry
                     yAcc.Add(rm.AccG[1][i]);
                 }
             }
-            Forces.DrawAccelerationMap(xAcc, yAcc);
+            if (ForcesView == null)
+            {
+                ForcesView = new FrictionCircleView();
+            }
+            ForcesView.Forces.DrawAccelerationMap(xAcc, yAcc);
+            ForcesView.Topmost = true;
+            ForcesView.Show();
         }
 
         private void DrawRpms()
@@ -283,8 +263,13 @@ namespace AssettoCorsaTelemetry
                     kmh.Add(rm.SpeedKmh[i]);
                 }
             }
-
-            Rpms.DrawRpmCanvas(rpm, kmh);
+            if (RpmView == null)
+            {
+                RpmView = new RpmView();
+            }
+            RpmView.Rpms.DrawRpmCanvas(rpm, kmh);
+            RpmView.Topmost = true;
+            RpmView.Show();
         }
 
         private RaceModel ReadFile(string filename)
@@ -344,9 +329,6 @@ namespace AssettoCorsaTelemetry
 
         public MainWindowViewModel()
         {
-            Track = new TrackViewModel();
-            Forces = new ForcesViewModel();
-            Rpms = new RpmViewModel();
             xCoordinates = new List<float>();
             yCoordinates = new List<float>();
             _isInTurns = new List<int>();
@@ -401,7 +383,7 @@ namespace AssettoCorsaTelemetry
 
             AppendToFile(physics, graphics);
 
-            UpdateTrack(physics, graphics);
+            //UpdateTrack(physics, graphics);
         }
 
         List<int> _trackSections;
@@ -551,7 +533,7 @@ namespace AssettoCorsaTelemetry
                     }
                 }
             }
-            Track.DrawTrack(xCoordinates, yCoordinates, _isInTurns);
+            //Track.DrawTrack(xCoordinates, yCoordinates, _isInTurns);
         }
 
         private void AppendToFile(Physics physics, Graphics graphics)

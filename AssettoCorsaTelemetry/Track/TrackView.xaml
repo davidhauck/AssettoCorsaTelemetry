@@ -1,0 +1,8 @@
+﻿<Window x:Class="AssettoCorsaTelemetry.Track.TrackView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TrackView" Height="{Binding CanvasHeight, Mode=TwoWay}" Width="{Binding CanvasWidth, Mode=TwoWay}">
+    <Canvas HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Green">
+        <ContentPresenter Content="{Binding TrackCanvas, Mode=TwoWay}"/>
+    </Canvas>
+</Window>
