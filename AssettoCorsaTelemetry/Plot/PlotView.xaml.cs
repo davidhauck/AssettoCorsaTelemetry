@@ -10,19 +10,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AssettoCorsaTelemetry.CompetedRace
+namespace AssettoCorsaTelemetry.Plot
 {
     /// <summary>
-    /// Interaction logic for CompletedRace.xaml
+    /// Interaction logic for PlotView.xaml
     /// </summary>
-    public partial class CompletedRace : Page
+    public partial class PlotView : Window
     {
-        public CompletedRace()
+        public PlotViewModel Plot { get { return DataContext as PlotViewModel; } }
+
+        public PlotView()
         {
             InitializeComponent();
+            DataContext = new PlotViewModel();
         }
     }
 }

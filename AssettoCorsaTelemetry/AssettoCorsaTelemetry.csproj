@@ -61,6 +61,10 @@
     <Compile Include="Forces\FrictionCircleView.xaml.cs">
       <DependentUpon>FrictionCircleView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Plot\PlotView.xaml.cs">
+      <DependentUpon>PlotView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Plot\PlotViewModel.cs" />
     <Compile Include="RaceModel.cs" />
     <Compile Include="Rpm\RpmView.xaml.cs">
       <DependentUpon>RpmView.xaml</DependentUpon>
@@ -88,6 +92,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Plot\PlotView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Rpm\RpmView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

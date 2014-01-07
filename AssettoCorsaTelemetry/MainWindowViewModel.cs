@@ -1,5 +1,6 @@
 ﻿using AcSdk.Data;
 using AssettoCorsaTelemetry.Forces;
+using AssettoCorsaTelemetry.Plot;
 using AssettoCorsaTelemetry.Rpm;
 using AssettoCorsaTelemetry.Track;
 using Microsoft.Win32;
@@ -51,6 +52,8 @@ namespace AssettoCorsaTelemetry
         private FrictionCircleView ForcesView { get; set; }
 
         private RpmView RpmView { get; set; }
+
+        private PlotView Plot { get; set; }
 
         private ICommand _clickCommand;
         public ICommand ClickCommand
@@ -155,7 +158,20 @@ namespace AssettoCorsaTelemetry
                 DrawForces();
                 DrawRpms();
                 DrawTrack();
+                DrawSuspensionTravel();
             }
+        }
+
+        private void DrawSuspensionTravel()
+        {
+            if (Plot == null)
+            {
+                Plot = new PlotView();
+            }
+            Plot.Plot.Draw(rm.SuspensionTravel, rm.SessionTimeLeft, null, 0, 0.5f);
+            Plot.Topmost = true;
+            Plot.Title = "Suspension Travel";
+            Plot.Show();
         }
 
         private void DrawTrack()
