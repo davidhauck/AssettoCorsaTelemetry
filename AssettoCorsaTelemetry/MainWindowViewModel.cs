@@ -4,6 +4,7 @@ using AssettoCorsaTelemetry.Track;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -92,8 +93,8 @@ namespace AssettoCorsaTelemetry
             }
         }
 
-        System.Collections.ObjectModel.ObservableCollection<string> _collectionLaps;
-        public System.Collections.ObjectModel.ObservableCollection<string> CollectionLaps
+        private ObservableCollection<string> _collectionLaps;
+        public ObservableCollection<string> CollectionLaps
         {
             get
             {
@@ -119,6 +120,33 @@ namespace AssettoCorsaTelemetry
             }
         }
 
+        private ObservableCollection<string> _collectionSections;
+        public ObservableCollection<string> CollectionSections
+        {
+            get
+            {
+                return _collectionSections;
+            }
+            set
+            {
+                SetProperty(ref _collectionSections, value);
+            }
+        }
+
+        private string _selectedSection;
+        public string SelectedSection
+        {
+            get
+            {
+                return _selectedSection;
+            }
+            set
+            {
+                SetProperty(ref _selectedSection, value);
+                UpdateScreen();
+            }
+        }
+
         RaceModel rm;
 
         public void OpenOldRace()
@@ -140,8 +168,14 @@ namespace AssettoCorsaTelemetry
                 {
                     CollectionLaps.Add(i.ToString());
                 }
-                rm.Turns = Track.FindIsInTurns(rm.AccG);
-                rm.TurnSections = CalculateTurnSections(rm.Turns, rm.CompletedLaps);
+                int numberOfSections;
+                rm.TurnSections = Track.FindTurnsBasedOnLap(rm.CompletedLaps, rm.AccG, rm.CarCoordinates, 0, out numberOfSections);
+                CollectionSections.Clear();
+                CollectionSections.Add("All Sections");
+                for (int i = 1; i <= numberOfSections; i++)
+                {
+                    CollectionSections.Add(i.ToString());
+                }
                 UpdateScreen();
             }
         }
@@ -160,53 +194,62 @@ namespace AssettoCorsaTelemetry
         {
             List<float> xCoor = null;
             List<float> yCoor = null;
-            List<int> turns = null;
+            List<int> turnSections = null;
+            int selectedlap;
+            int selectedsection;
+
             if (SelectedLap == "All Laps")
-            {
-                xCoor = rm.CarCoordinates[0];
-                yCoor = rm.CarCoordinates[2];
-                turns = rm.Turns;
-            }
+                selectedlap = -1;
             else
+                selectedlap = int.Parse(SelectedLap);
+
+            if (SelectedSection == "All Sections")
+                selectedsection = -1;
+            else
+                selectedsection = int.Parse(SelectedSection);
+
+            xCoor = new List<float>();
+            yCoor = new List<float>();
+            turnSections = new List<int>();
+
+            for (int i = 0; i < rm.AccG[0].Count; i++)
             {
-                xCoor = new List<float>();
-                yCoor = new List<float>();
-                turns = new List<int>();
-                int lapnumber = int.Parse(SelectedLap);
-                for (int i = 0; i < rm.AccG[0].Count; i++)
+                if ((rm.CompletedLaps[i] == selectedlap - 1 || selectedlap == -1) && (rm.TurnSections[i] == selectedsection - 1 || selectedsection == -1))
                 {
-                    if (rm.CompletedLaps[i] == lapnumber - 1)
-                    {
-                        xCoor.Add(rm.CarCoordinates[0][i]);
-                        yCoor.Add(rm.CarCoordinates[2][i]);
-                        turns.Add(rm.Turns[i]);
-                    }
+                    xCoor.Add(rm.CarCoordinates[0][i]);
+                    yCoor.Add(rm.CarCoordinates[2][i]);
+                    turnSections.Add(rm.TurnSections[i]);
                 }
             }
-            Track.DrawTrack(xCoor, yCoor, turns);
+            Track.DrawTrack(xCoor, yCoor, turnSections);
         }
 
         private void DrawForces()
         {
             List<float> xAcc = null;
             List<float> yAcc = null;
+            int selectedlap;
+            int selectedsection;
+
             if (SelectedLap == "All Laps")
-            {
-                xAcc = rm.AccG[0];
-                yAcc = rm.AccG[1];
-            }
+                selectedlap = -1;
             else
+                selectedlap = int.Parse(SelectedLap);
+
+            if (SelectedSection == "All Sections")
+                selectedsection = -1;
+            else
+                selectedsection = int.Parse(SelectedSection);
+
+            xAcc = new List<float>();
+            yAcc = new List<float>();
+
+            for (int i = 0; i < rm.AccG[0].Count; i++)
             {
-                xAcc = new List<float>();
-                yAcc = new List<float>();
-                int lapnumber = int.Parse(SelectedLap);
-                for (int i = 0; i < rm.AccG[0].Count; i++)
+                if ((rm.CompletedLaps[i] == selectedlap - 1 || selectedlap == -1) && (rm.TurnSections[i] == selectedsection - 1 || selectedsection == -1))
                 {
-                    if (rm.CompletedLaps[i] == lapnumber - 1)
-                    {
-                        xAcc.Add(rm.AccG[0][i]);
-                        yAcc.Add(rm.AccG[1][i]);
-                    }
+                    xAcc.Add(rm.AccG[0][i]);
+                    yAcc.Add(rm.AccG[1][i]);
                 }
             }
             Forces.DrawAccelerationMap(xAcc, yAcc);
@@ -216,86 +259,32 @@ namespace AssettoCorsaTelemetry
         {
             List<int> rpm = null;
             List<float> kmh = null;
+            int selectedlap;
+            int selectedsection;
+
             if (SelectedLap == "All Laps")
-            {
-                rpm = rm.Rpms;
-                kmh = rm.SpeedKmh;
-            }
+                selectedlap = -1;
             else
+                selectedlap = int.Parse(SelectedLap);
+
+            if (SelectedSection == "All Sections")
+                selectedsection = -1;
+            else
+                selectedsection = int.Parse(SelectedSection);
+
+            rpm = new List<int>();
+            kmh = new List<float>();
+
+            for (int i = 0; i < rm.AccG[0].Count; i++)
             {
-                rpm = new List<int>();
-                kmh = new List<float>();
-                int lapnumber = int.Parse(SelectedLap);
-                for (int i = 0; i < rm.AccG[0].Count; i++)
+                if ((rm.CompletedLaps[i] == selectedlap - 1 || selectedlap == -1) && (rm.TurnSections[i] == selectedsection - 1 || selectedsection == -1))
                 {
-                    if (rm.CompletedLaps[i] == lapnumber - 1)
-                    {
-                        rpm.Add(rm.Rpms[i]);
-                        kmh.Add(rm.SpeedKmh[i]);
-                    }
+                    rpm.Add(rm.Rpms[i]);
+                    kmh.Add(rm.SpeedKmh[i]);
                 }
             }
+
             Rpms.DrawRpmCanvas(rpm, kmh);
-        }
-
-        private List<int> CalculateTurnSections(List<int> turns, List<int> completedLaps)
-        {
-            if (completedLaps[0] == completedLaps[completedLaps.Count - 1])
-            {
-                return new List<int>();
-            }
-            int lap = completedLaps[0];
-            List<List<int>> laps = new List<List<int>>();
-
-            List<int> result = new List<int>();
-
-
-            int starting = 0;
-            for (int i = 0; ; i++) //get rid of junk before the lap starts (only works for flying laps for now)
-            {
-                if (completedLaps[i] > lap)
-                {
-                    starting = i;
-                    break;
-                }
-                result.Add(-1);
-            }
-
-            List<int> totalSections = new List<int>();
-
-            int section = 0;
-            int j = 0;
-            int previousTurn = 0;
-            lap = completedLaps[starting];
-            for (int i = starting; i < turns.Count;)
-            {
-                laps.Add(new List<int>());
-                while (lap == completedLaps[i])
-                {
-                    if (turns[i] != previousTurn)
-                    {
-                        section++;
-                    }
-                    result.Add(section);
-                    laps[lap - completedLaps[0] - 1].Add(section);
-                    previousTurn = turns[i];
-                    i++;
-                    if (i >= turns.Count)
-                        break;
-                }
-                lap++;
-                totalSections.Add(section);
-                section = 0;
-                if (lap == completedLaps[completedLaps.Count - 1])
-                    break;
-            }
-
-            for (int i = result.Count; i < turns.Count; i++) //Get rid of any trailing lap
-            {
-                result.Add(-1);
-            }
-
-            return result;
         }
 
         private RaceModel ReadFile(string filename)
@@ -363,7 +352,9 @@ namespace AssettoCorsaTelemetry
             _isInTurns = new List<int>();
             _trackSections = new List<int>();
             CollectionLaps = new System.Collections.ObjectModel.ObservableCollection<string>();
+            CollectionSections = new ObservableCollection<string>();
             SelectedLap = "All Laps";
+            SelectedSection = "All Sections";
 
             string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\AssettoCorsaTelemetry\\";
             string fileName = DateTime.Now.ToString("MM-dd-yyyy_HH-mm") + ".csv";
