@@ -37,6 +37,15 @@
     <Reference Include="AcSdk">
       <HintPath>libs\AcSdk.dll</HintPath>
     </Reference>
+    <Reference Include="OxyPlot">
+      <HintPath>..\packages\OxyPlot.Core.2014.1.1.1\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Wpf">
+      <HintPath>..\packages\OxyPlot.Wpf.2014.1.1.1\lib\NET45\OxyPlot.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Xps">
+      <HintPath>..\packages\OxyPlot.Wpf.2014.1.1.1\lib\NET45\OxyPlot.Xps.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -56,7 +65,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CommandHandler.cs" />
     <Compile Include="Forces\ForcesViewModel.cs" />
     <Compile Include="Forces\FrictionCircleView.xaml.cs">
       <DependentUpon>FrictionCircleView.xaml</DependentUpon>
@@ -66,6 +74,7 @@
     </Compile>
     <Compile Include="Plot\PlotViewModel.cs" />
     <Compile Include="RaceModel.cs" />
+    <Compile Include="RelayCommand.cs" />
     <Compile Include="Rpm\RpmView.xaml.cs">
       <DependentUpon>RpmView.xaml</DependentUpon>
     </Compile>
@@ -124,6 +133,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

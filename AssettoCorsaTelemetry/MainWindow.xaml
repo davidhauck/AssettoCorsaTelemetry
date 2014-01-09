@@ -11,5 +11,52 @@
         <Label Content="Lap" HorizontalAlignment="Left" Margin="186,3,0,0" VerticalAlignment="Top"/>
         <ComboBox HorizontalAlignment="Left" Margin="311,29,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding CollectionSections}" SelectedItem="{Binding SelectedSection}"/>
         <Label Content="Section" HorizontalAlignment="Left" Margin="311,3,0,0" VerticalAlignment="Top"/>
+        <ComboBox HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListOfPlottableDatas}" SelectedItem="{Binding SelectedData1}"/>
+        <ComboBox HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListOfPlottableDatas}" SelectedItem="{Binding SelectedData2}"/>
+        <ComboBox HorizontalAlignment="Left" Margin="10,175,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListOfPlottableDatas}" SelectedItem="{Binding SelectedData3}"/>
+        <ComboBox HorizontalAlignment="Left" Margin="10,256,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListOfPlottableDatas}" SelectedItem="{Binding SelectedData4}"/>
+        <ComboBox HorizontalAlignment="Left" Margin="10,229,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListOfPlottableDatas}" SelectedItem="{Binding SelectedData5}"/>
+        <ComboBox HorizontalAlignment="Left" Margin="10,202,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListOfPlottableDatas}" SelectedItem="{Binding SelectedData6}"/>
+        <Button Content="Create Plot" HorizontalAlignment="Left" Margin="10,283,0,0" VerticalAlignment="Top" Width="75" Command="{Binding CreatePlotCommand}"/>
+        <Grid>
+            <Label Content="Status:" HorizontalAlignment="Left"  VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="50,5,0,0" TextWrapping="Wrap" Text="{Binding Status}" VerticalAlignment="Top" RenderTransformOrigin="2.092,5.758"/>
+            <Button Content="Open Completed Race" Command="{Binding ClickCommand}" HorizontalAlignment="Left" Margin="0,31,0,0" VerticalAlignment="Top" Width="140" Visibility="{Binding RacingVisibility}"/>
+            <ComboBox HorizontalAlignment="Left" Margin="186,29,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding CollectionLaps}" SelectedItem="{Binding SelectedLap}"/>
+            <Label Content="Lap" HorizontalAlignment="Left" Margin="186,3,0,0" VerticalAlignment="Top"/>
+            <ComboBox HorizontalAlignment="Left" Margin="311,29,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding CollectionSections}" SelectedItem="{Binding SelectedSection}"/>
+            <Label Content="Section" HorizontalAlignment="Left" Margin="311,3,0,0" VerticalAlignment="Top"/>
+            <ComboBox HorizontalAlignment="Left" Margin="10,121,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListOfPlottableDatas}" SelectedItem="{Binding SelectedData1}"/>
+            <ComboBox HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListOfPlottableDatas}" SelectedItem="{Binding SelectedData2}"/>
+            <ComboBox HorizontalAlignment="Left" Margin="10,175,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListOfPlottableDatas}" SelectedItem="{Binding SelectedData3}"/>
+            <ComboBox HorizontalAlignment="Left" Margin="10,256,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListOfPlottableDatas}" SelectedItem="{Binding SelectedData4}"/>
+            <ComboBox HorizontalAlignment="Left" Margin="10,229,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListOfPlottableDatas}" SelectedItem="{Binding SelectedData5}"/>
+            <ComboBox HorizontalAlignment="Left" Margin="10,202,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding ListOfPlottableDatas}" SelectedItem="{Binding SelectedData6}"/>
+            <Button Content="Create Plot" HorizontalAlignment="Left" Margin="10,283,0,0" VerticalAlignment="Top" Width="75" Command="{Binding CreatePlotCommand}"/>
+            <CheckBox Content="1" HorizontalAlignment="Left" Margin="144,128,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked1[0]}"/>
+            <CheckBox Content="2" HorizontalAlignment="Left" Margin="175,128,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked1[1]}"/>
+            <CheckBox Content="3" HorizontalAlignment="Left" Margin="206,128,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked1[2]}"/>
+            <CheckBox Content="4" HorizontalAlignment="Left" Margin="237,128,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked1[3]}"/>
+            <CheckBox Content="1" HorizontalAlignment="Left" Margin="144,155,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked2[0]}"/>
+            <CheckBox Content="2" HorizontalAlignment="Left" Margin="175,155,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked2[1]}"/>
+            <CheckBox Content="3" HorizontalAlignment="Left" Margin="206,155,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked2[2]}"/>
+            <CheckBox Content="4" HorizontalAlignment="Left" Margin="237,155,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked2[3]}"/>
+            <CheckBox Content="1" HorizontalAlignment="Left" Margin="144,182,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked3[0]}"/>
+            <CheckBox Content="2" HorizontalAlignment="Left" Margin="175,182,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked3[1]}"/>
+            <CheckBox Content="3" HorizontalAlignment="Left" Margin="206,182,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked3[2]}"/>
+            <CheckBox Content="4" HorizontalAlignment="Left" Margin="237,182,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked3[3]}"/>
+            <CheckBox Content="1" HorizontalAlignment="Left" Margin="144,209,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked4[0]}"/>
+            <CheckBox Content="2" HorizontalAlignment="Left" Margin="175,209,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked4[1]}"/>
+            <CheckBox Content="3" HorizontalAlignment="Left" Margin="206,209,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked4[2]}"/>
+            <CheckBox Content="4" HorizontalAlignment="Left" Margin="237,209,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked4[3]}"/>
+            <CheckBox Content="1" HorizontalAlignment="Left" Margin="144,236,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked5[0]}"/>
+            <CheckBox Content="2" HorizontalAlignment="Left" Margin="175,236,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked5[1]}"/>
+            <CheckBox Content="3" HorizontalAlignment="Left" Margin="206,236,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked5[2]}"/>
+            <CheckBox Content="4" HorizontalAlignment="Left" Margin="237,236,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked5[3]}"/>
+            <CheckBox Content="1" HorizontalAlignment="Left" Margin="144,263,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked6[0]}"/>
+            <CheckBox Content="2" HorizontalAlignment="Left" Margin="175,263,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked6[1]}"/>
+            <CheckBox Content="3" HorizontalAlignment="Left" Margin="206,263,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked6[2]}"/>
+            <CheckBox Content="4" HorizontalAlignment="Left" Margin="237,263,0,0" VerticalAlignment="Top" IsChecked="{Binding IsChecked6[3]}"/>
+        </Grid>
     </Grid>
 </Window>

@@ -1,10 +1,9 @@
 ﻿<Window x:Class="AssettoCorsaTelemetry.Plot.PlotView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" 
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="PlotView" Height="{Binding CanvasHeight, Mode=TwoWay}" Width="{Binding CanvasWidth, Mode=TwoWay}">
-    <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Hidden">
-        <Canvas Background="Orange" Width="{Binding PlotAreaWidth}" Height="{Binding PloatAreaHeight}">
-            <ContentPresenter Content="{Binding PlotCanvas, Mode=TwoWay}"/>
-        </Canvas>
+    <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
+        <oxy:Plot Model="{Binding Model}"/>
     </ScrollViewer>
 </Window>

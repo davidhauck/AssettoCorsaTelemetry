@@ -53,14 +53,16 @@ namespace AssettoCorsaTelemetry
 
         private RpmView RpmView { get; set; }
 
-        private PlotView Plot { get; set; }
-
         private ICommand _clickCommand;
         public ICommand ClickCommand
         {
             get
             {
-                return _clickCommand ?? (_clickCommand = new CommandHandler(() => OpenOldRace(), true));
+                if (_clickCommand == null)
+                {
+                    _clickCommand = new RelayCommand(p => this.OpenOldRace());
+                }
+                return _clickCommand;
             }
         }
 
@@ -118,7 +120,239 @@ namespace AssettoCorsaTelemetry
             }
         }
 
+        private ObservableCollection<string> _listOfPlottableDatas = new ObservableCollection<string>() { "Gas", "Brake", "Fuel", "Gear", "Rpms", "SteerAngle", "SpeedKmh", "Velocity", "AccG", "WheelSlip", "WheelLoad", "WheelsPressure", "WheelAngularSpeed", "TyreWear", "TyreDirtyLevel", "TyreCoreTemperature", "CamberRad", "SuspensionTravel", "Heading", "Pitch", "Roll", "CgHeight", "CarDamage", "NumberOfTyresOut", "Abs" };
+        public ObservableCollection<string> ListOfPlottableDatas
+        {
+            get
+            {
+                return _listOfPlottableDatas;
+            }
+            set
+            {
+                SetProperty(ref _listOfPlottableDatas, value);
+            }
+        }
+
+        private string _selectedData1;
+        public string SelectedData1
+        {
+            get
+            {
+                return _selectedData1;
+            }
+            set
+            {
+                SetProperty(ref _selectedData1, value);
+            }
+        }
+
+        private string _selectedData2;
+        public string SelectedData2
+        {
+            get
+            {
+                return _selectedData2;
+            }
+            set
+            {
+                SetProperty(ref _selectedData2, value);
+            }
+        }
+
+        private string _selectedData3;
+        public string SelectedData3
+        {
+            get
+            {
+                return _selectedData3;
+            }
+            set
+            {
+                SetProperty(ref _selectedData3, value);
+            }
+        }
+
+        private string _selectedData4;
+        public string SelectedData4
+        {
+            get
+            {
+                return _selectedData4;
+            }
+            set
+            {
+                SetProperty(ref _selectedData4, value);
+            }
+        }
+
+        private string _selectedData5;
+        public string SelectedData5
+        {
+            get
+            {
+                return _selectedData5;
+            }
+            set
+            {
+                SetProperty(ref _selectedData5, value);
+            }
+        }
+
+        private string _selectedData6;
+        public string SelectedData6
+        {
+            get
+            {
+                return _selectedData6;
+            }
+            set
+            {
+                SetProperty(ref _selectedData6, value);
+            }
+        }
+
+        private List<string> SelectedPlottingDatas
+        {
+            get
+            {
+                var newList = new List<string>();
+                if (!string.IsNullOrWhiteSpace(SelectedData1))
+                {
+                    newList.Add(SelectedData1);
+                }
+                if (!string.IsNullOrWhiteSpace(SelectedData2))
+                {
+                    newList.Add(SelectedData2);
+                }
+                if (!string.IsNullOrWhiteSpace(SelectedData3))
+                {
+                    newList.Add(SelectedData3);
+                }
+                if (!string.IsNullOrWhiteSpace(SelectedData4))
+                {
+                    newList.Add(SelectedData4);
+                }
+                if (!string.IsNullOrWhiteSpace(SelectedData5))
+                {
+                    newList.Add(SelectedData5);
+                }
+                if (!string.IsNullOrWhiteSpace(SelectedData6))
+                {
+                    newList.Add(SelectedData6);
+                }
+                return newList;
+            }
+        }
+
+        private List<string> FullSelectedPlottingData
+        {
+            get
+            {
+                return new List<string>() { SelectedData1, SelectedData2, SelectedData3, SelectedData4, SelectedData5, SelectedData6 };
+            }
+        }
+
+        private ICommand _createPlotCommand;
+        public ICommand CreatePlotCommand
+        {
+            get
+            {
+                if (_createPlotCommand == null)
+                {
+                    _createPlotCommand = new RelayCommand(p => this.CreatePlot());
+                }
+                return _createPlotCommand;
+            }
+        }
         RaceModel rm;
+
+        public Boolean[] IsChecked1
+        {
+            get;
+            set;
+        }
+
+        public Boolean[] IsChecked2
+        {
+            get;
+            set;
+        }
+        public Boolean[] IsChecked3
+        {
+            get;
+            set;
+        }
+        public Boolean[] IsChecked4
+        {
+            get;
+            set;
+        }
+        public Boolean[] IsChecked5
+        {
+            get;
+            set;
+        }
+        public Boolean[] IsChecked6
+        {
+            get;
+            set;
+        }
+
+        private List<Boolean[]> IsChecked
+        {
+            get
+            {
+                return new List<Boolean[]>() { IsChecked1, IsChecked2, IsChecked3, IsChecked4, IsChecked5, IsChecked6 };
+            }
+        }
+
+        private void CreatePlot()
+        {
+            PlotView plot = new PlotView();
+            List<string> names = SelectedPlottingDatas;
+            List<List<float>> plots = new List<List<float>>();
+            List<string> graphNames = new List<string>();
+            for (int i = 0; i < names.Count; i++)
+            {
+                var info = typeof(RaceModel).GetProperty(names[i]);
+                var newValue = info.GetValue(rm);
+                if (newValue.GetType() == typeof(List<List<float>>))
+                {
+                    var newListList = newValue as List<List<float>>;
+                    for (int j = 0; j < newListList.Count; j++)
+                    {
+                        int index = FullSelectedPlottingData.IndexOf(names[i]);
+                        if (IsChecked[i][j] == true)
+                        {
+                            plots.Add(newListList[j]);
+                            graphNames.Add(info.Name);
+                        }
+                    }
+                }
+                else if (newValue.GetType() == typeof(List<float>))
+                {
+                    var newList = newValue as List<float>;
+                    plots.Add(newList);
+                    graphNames.Add(info.Name);
+                }
+                else if (newValue.GetType() == typeof(List<int>))
+                {
+                    var newListInts = newValue as List<int>;
+                    var newList = new List<float>();
+                    newListInts.ForEach(element => newList.Add((float)element));
+                    plots.Add(newList);
+                    graphNames.Add(info.Name);
+                }
+            }
+            if (graphNames.Count == 0)
+            {
+                return;
+            }
+            plot.Plot.Draw(plots, rm.SessionTimeLeft, graphNames, 0, 0.5f);
+            plot.Topmost = true;
+            plot.Title = graphNames[0];
+            plot.Show();
+        }
 
         public void OpenOldRace()
         {
@@ -158,20 +392,7 @@ namespace AssettoCorsaTelemetry
                 DrawForces();
                 DrawRpms();
                 DrawTrack();
-                DrawSuspensionTravel();
             }
-        }
-
-        private void DrawSuspensionTravel()
-        {
-            if (Plot == null)
-            {
-                Plot = new PlotView();
-            }
-            Plot.Plot.Draw(rm.SuspensionTravel, rm.SessionTimeLeft, null, 0, 0.5f);
-            Plot.Topmost = true;
-            Plot.Title = "Suspension Travel";
-            Plot.Show();
         }
 
         private void DrawTrack()
@@ -345,6 +566,13 @@ namespace AssettoCorsaTelemetry
 
         public MainWindowViewModel()
         {
+            IsChecked1 = new Boolean[4];
+            IsChecked2 = new Boolean[4];
+            IsChecked3 = new Boolean[4];
+            IsChecked4 = new Boolean[4];
+            IsChecked5 = new Boolean[4];
+            IsChecked6 = new Boolean[4];
+
             xCoordinates = new List<float>();
             yCoordinates = new List<float>();
             _isInTurns = new List<int>();
@@ -362,6 +590,11 @@ namespace AssettoCorsaTelemetry
             _physicsMembers = t.GetFields(BindingFlags.Public | BindingFlags.Instance);
             Type type = typeof(Graphics);
             _graphicsMembers = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+            bool isExists = System.IO.Directory.Exists(path);
+
+            if (!isExists)
+                System.IO.Directory.CreateDirectory(path);
 
             using (StreamWriter f = File.AppendText(_filepath))
             {
